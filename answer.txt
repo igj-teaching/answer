@@ -1,0 +1,61 @@
+
+
+xm <- read.table("mitogenes.fasta", colClasses = c("character", "character"))
+xn <- read.table("nonmitogenes.fasta", colClasses = c("character", "character"))
+lenm <- nchar(xm[,2])
+lenn <- nchar(xn[,2])
+hist(lenm)
+hist(lenn)
+shapiro.test(lenn)
+hist(log(lenm))
+hist(log(lenn))
+
+gcm = numeric(length(xm[,2]))
+for(i in 1:length(xm[,2]))
+{
+  gcm[i] = 0;
+  for(j in 1:nchar(xm[i,2]))
+  {
+    ch = substr(xm[i,2], j, j);
+    if(ch == "G" || ch == "C")
+    {
+      gcm[i] = gcm[i] + 1
+    }
+  }
+  gcm[i] = gcm[i] / nchar(xm[i,2]);
+}
+
+gcn = numeric(length(xn[,2]))
+for(i in 1:length(xn[,2]))
+{
+  gcn[i] = 0;
+  for(j in 1:nchar(xn[i,2]))
+  {
+    ch = substr(xn[i,2], j, j);
+    if(ch == "G" || ch == "C")
+    {
+      gcn[i] = gcn[i] + 1
+    }
+  }
+  gcn[i] = gcn[i] / nchar(xn[i,2]);
+}
+
+x0set = y0set = x1set = y1set = c(c(0,0))
+for(i in 1:100)
+{
+  r = i
+  level = 0
+  while(r != 1)
+  {
+    print(r)
+    oldr = r
+    if(r %% 2 == 1) { r = 3*r+1 }
+    else { r = r/2 }
+    x0set = append(x0set, level+1)
+    x1set = append(x1set, level)
+    y0set = append(y0set, oldr)
+    y1set = append(y1set, r)
+    level = level+1
+  }
+}
+
